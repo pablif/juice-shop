@@ -1,24 +1,19 @@
 FROM node:20-buster AS installer
 COPY . /juice-shop
 WORKDIR /juice-shop
-RUN curl -SL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz" --output nodejs.tar.gz \
-&& echo "$NODE_DOWNLOAD_SHA nodejs.tar.gz" | sha256sum -c - \
-&& tar -xzf "nodejs.tar.gz" -C /usr/local --strip-components=1 \
-&& rm nodejs.tar.gz \
-&& ln -s /usr/local/bin/node /usr/local/bin/nodejs
-RUN npm i -g typescript ts-node
-RUN npm install --omit=dev --unsafe-perm
-RUN npm dedupe --omit=dev
-RUN rm -rf frontend/node_modules
-RUN rm -rf frontend/.angular
-RUN rm -rf frontend/src/assets
-RUN mkdir logs
-RUN chown -R 65532 logs
-RUN chgrp -R 0 ftp/ frontend/dist/ logs/ data/ i18n/
-RUN chmod -R g=u ftp/ frontend/dist/ logs/ data/ i18n/
-RUN rm data/chatbot/botDefaultTrainingData.json || true
-RUN rm ftp/legal.md || true
-RUN rm i18n/*.json || true
+RUN npm i -g typescript ts-node\
+&& npm install --omit=dev --unsafe-perm\
+&& npm dedupe --omit=dev\
+&& rm -rf frontend/node_modules\
+&& rm -rf frontend/.angular\
+&& rm -rf frontend/src/assets\
+&& mkdir logs\
+&& chown -R 65532 logs\
+&& chgrp -R 0 ftp/ frontend/dist/ logs/ data/ i18n/\
+&& chmod -R g=u ftp/ frontend/dist/ logs/ data/ i18n/\
+&& rm data/chatbot/botDefaultTrainingData.json || true\
+&& rm ftp/legal.md || true\
+&& rm i18n/*.json || true
 
 ARG CYCLONEDX_NPM_VERSION=latest
 RUN npm install -g @cyclonedx/cyclonedx-npm@$CYCLONEDX_NPM_VERSION
