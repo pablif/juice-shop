@@ -1,18 +1,18 @@
 FROM node:20-buster AS installer
 COPY . /juice-shop
 WORKDIR /juice-shop
-RUN npm i -g typescript ts-node\
-&& npm install --omit=dev --unsafe-perm\
-&& npm dedupe --omit=dev\
-&& rm -rf frontend/node_modules\
-&& rm -rf frontend/.angular\
-&& rm -rf frontend/src/assets\
-&& mkdir logs\
-&& chown -R 65532 logs\
-&& chgrp -R 0 ftp/ frontend/dist/ logs/ data/ i18n/\
-&& chmod -R g=u ftp/ frontend/dist/ logs/ data/ i18n/\
-&& rm data/chatbot/botDefaultTrainingData.json || true\
-&& rm ftp/legal.md || true\
+RUN npm i -g typescript ts-node \
+&& npm install --omit=dev --unsafe-perm \
+&& npm dedupe --omit=dev \
+&& rm -rf frontend/node_modules \
+&& rm -rf frontend/.angular \
+&& rm -rf frontend/src/assets \
+&& mkdir logs \
+&& chown -R 65532 logs \
+&& chgrp -R 0 ftp/ frontend/dist/ logs/ data/ i18n/ \
+&& chmod -R g=u ftp/ frontend/dist/ logs/ data/ i18n/ \
+&& rm data/chatbot/botDefaultTrainingData.json || true \
+&& rm ftp/legal.md || true \
 && rm i18n/*.json || true
 
 ARG CYCLONEDX_NPM_VERSION=latest
