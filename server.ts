@@ -601,7 +601,17 @@ restoreOverwrittenFilesWithOriginals().then(() => {
   app.post('/rest/chatbot/respond', chatbot.process())
   /* NoSQL API endpoints */
   app.get('/rest/products/:id/reviews', showProductReviews())
-  app.put('/rest/products/:id/reviews', createProductReviews())
+  app.const { MongoClient } = require('mongodb');
+
+function (req, res) {
+    let query = { user: req.query.user.toString(), city: req.query.city.toString() };
+
+    MongoClient.connect(url, (err, db) => {
+        db.collection("users")
+        .find(query)
+        .toArray((err, docs) => { });
+    });
+}put('/rest/products/:id/reviews', createProductReviews())
   app.patch('/rest/products/reviews', security.isAuthorized(), updateProductReviews())
   app.post('/rest/products/reviews', security.isAuthorized(), likeProductReviews())
 
